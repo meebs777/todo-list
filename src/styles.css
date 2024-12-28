@@ -45,3 +45,46 @@
     isolation: isolate;
   }
 
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #container {
+    margin-top: 50px;
+    background-color: #a78bfa;
+    border-radius: 30px;
+    width: 67.5%;
+    height: 1000px;
+  }
+
+  .content {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .sidebar {
+    flex: 1;
+    background-color: white;
+    border-radius: 30px;
+  }
+
+  .main {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .top {
+    text-align: center;
+    
+  }
+
+  .side-top {
+    margin-top: 50px;
+    text-align: center;
+  }
+
