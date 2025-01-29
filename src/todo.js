@@ -64,3 +64,7 @@ export function deleteTodo(project,todo) {
         todo.todoIndex--;
     }) 
 }
+
+export function editTodo(todo,key,value) {
+    todo[key] = value;
+}

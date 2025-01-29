@@ -88,3 +88,7 @@
     text-align: center;
   }
 
+  .project-container > h3 {
+    margin-left: 100px;
+  }
+
