@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-    <dialog>
+    <dialog id="projectModal">
         <form action="">
             <div>
                 <label for="title">Project Name</label>
@@ -33,6 +33,22 @@
             <div class="btnContainer">
                 <button id="submitBtn" type="button" autofocus>Submit</button>
                 <button id="cancelBtn" type="button" autofocus>Cancel</button>
+            </div>
+        </form>
+      </dialog>
+      <dialog id="taskModal">
+        <form action="">
+            <div>
+                <label for="task-title">Task Name</label>
+                <input type="text" id="task-title">
+            </div>
+            <div>
+                <label for="description">Task Description</label>
+                <input type="text" id="description">
+            </div>
+            <div class="btnContainer">
+                <button id="submit-task" type="button" autofocus>Submit</button>
+                <button id="cancel-task" type="button" autofocus>Cancel</button>
             </div>
         </form>
       </dialog>

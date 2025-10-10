@@ -1,4 +1,4 @@
-import { createProject, projectArray, deleteProject } from "./todo";
+import { createProject, projectArray, deleteProject,createTodo } from "./todo";
 import trashImage from "../images/trash-can.svg"
 
 export function renderProjectHeader(project) {
@@ -8,14 +8,32 @@ export function renderProjectHeader(project) {
     const proj = document.createElement("div");    
     proj.classList.add("project-container");
     const projTitle = document.createElement("h2");
+    projTitle.id = "projTitle"
     projTitle.textContent = project.title;
     proj.appendChild(projTitle);
     container.appendChild(proj);
-
 }
 
-export function addTodo() {
+export function handleAddTask() {
+    const addTaskBtn = document.querySelector(".task-button")
+    const dialog = document.getElementById("taskModal");
+    const submitButton = document.querySelector("#submit-task");
+    const cancelButton = document.getElementById("cancel-task");
 
+    addTaskBtn.addEventListener("click", () => {
+        dialog.showModal();
+    })
+    submitButton.addEventListener("click", () => {
+        const projTitle = document.getElementById("projTitle").textContent
+        const activeIndex = projectArray.findIndex((element) => element.title === projTitle)
+        const taskTitle = document.getElementById("task-title").value;
+        const titleDescription = document.getElementById("description").value
+        const newTodo = createTodo(taskTitle,titleDescription,"","",projectArray[activeIndex]);
+        dialog.close();
+    })
+    cancelButton.addEventListener("click", () => {
+        dialog.close();
+    })
 };
 
 export function renderProjectTitles (projectArray) {
@@ -50,7 +68,7 @@ function insertTrashImg(parent) {
 }
 
 export function handleAddProject (projectArray) {
-    const dialog = document.querySelector("dialog");
+    const dialog = document.getElementById("projectModal")
     const showButton = document.querySelector(".add-project");
     const submitButton = document.querySelector("#submitBtn");
     const cancelButton = document.getElementById("cancelBtn");
@@ -94,3 +112,4 @@ function switchActiveProject(index) {
     }
     if(index >= 0) renderProjectHeader(projectArray[index]);
 }
+
