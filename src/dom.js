@@ -31,6 +31,7 @@ export function renderProjectTitles (projectArray) {
         projItem.setAttribute("data-index",index)
         projItem.textContent = element.title;
         insertTrashImg(projItem);
+        projectListener(projItem);
         projList.appendChild(projItem);
         index++;
         
@@ -73,8 +74,23 @@ export function handleAddProject (projectArray) {
 };
 
 function handleDeleteProject (projectIndex) {
-    console.log(projectIndex)
-    const index = projectIndex
-    deleteProject(projectArray[index]);
-    renderProjectTitles(projectArray);
+    const index = projectIndex;
+    //Don't let last project get deleted
+    if (projectArray.length > 1) {
+        deleteProject(projectArray[index]);
+        renderProjectTitles(projectArray);
+    }
+}
+
+function projectListener(projItem) {
+    const index = projItem.dataset.index;
+    projItem.addEventListener("click", () => switchActiveProject(index));
+
+}
+function switchActiveProject(index) {
+    //
+    if (index > projectArray.length-1) {
+        index--;
+    }
+    if(index >= 0) renderProjectHeader(projectArray[index]);
 }
