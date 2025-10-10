@@ -10,15 +10,31 @@
         <div class="content">
             <div class="sidebar">
                 <h1 class="side-top">Projects</h1>
-                <div class="side-bottom"></div>
+                <div class="side-bottom">
+                    <ul class="projList"></ul>
+                </div>
+                <div class="add-project"><button class="project-button">Add Project</button></div>
             </div>
             <div class="main">
                 <h1 class="top">Todo-List</h1>
                 <div class="bottom">
                     <div class="project-container"></div>
+                    <div class="add-task"><button class="task-button">Add Task</button></div>
                 </div>
             </div>
         </div>
     </div>
+    <dialog>
+        <form action="">
+            <div>
+                <label for="title">Project Name</label>
+                <input type="text" id="title">
+            </div>
+            <div class="btnContainer">
+                <button id="submitBtn" type="button" autofocus>Submit</button>
+                <button id="cancelBtn" type="button" autofocus>Cancel</button>
+            </div>
+        </form>
+      </dialog>
 </body>
 </html>
