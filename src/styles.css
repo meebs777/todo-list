@@ -86,16 +86,19 @@
 
   .side-top {
     margin-top: 50px;
-    text-align: center;
+    text-align: left;
+    margin-left: 50px;
   }
 
   .project-container > h2 {
-    margin-left: 100px;
+    margin-left: 20px;
+    margin-bottom: 20px;
   }
 
   .add-project {
     display: flex;
     justify-content: flex-end;
+    margin-top: 20px;
   }
   .add-project > button {
     margin-right: 10px;
@@ -159,4 +162,35 @@
 
   button {
     border-radius: 15px;
+  }
+  
+  button:hover {
+    cursor: pointer;
+  }
+
+  .add-task {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .project-container {
+    margin-bottom: 20px;
+  }
+
+  #task-container {
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+    gap: 20px;
+  }
+
+  .task-div {
+    padding-left: 5px;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+  }
+  .task-div:hover {
+    background-color: #c4b5fd;;
+    cursor: pointer;
   }

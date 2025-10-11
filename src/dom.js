@@ -11,7 +11,7 @@ export function renderProjectHeader(project) {
     projTitle.id = "projTitle"
     projTitle.textContent = project.title;
     proj.appendChild(projTitle);
-    container.appendChild(proj);
+    container.insertBefore(proj,container.firstChild);
 }
 
 export function handleAddTask() {
@@ -24,11 +24,13 @@ export function handleAddTask() {
         dialog.showModal();
     })
     submitButton.addEventListener("click", () => {
-        const projTitle = document.getElementById("projTitle").textContent
-        const activeIndex = projectArray.findIndex((element) => element.title === projTitle)
+        //Match project title with current array index to make sure tasks are added to correct project
+        const activeIndex = findCurrentIndex();
         const taskTitle = document.getElementById("task-title").value;
         const titleDescription = document.getElementById("description").value
-        const newTodo = createTodo(taskTitle,titleDescription,"","",projectArray[activeIndex]);
+        const dueDate = document.getElementById("date").value
+        const newTodo = createTodo(taskTitle,titleDescription,dueDate,"",projectArray[activeIndex]);
+        renderTasks();
         dialog.close();
     })
     cancelButton.addEventListener("click", () => {
@@ -111,5 +113,41 @@ function switchActiveProject(index) {
         index--;
     }
     if(index >= 0) renderProjectHeader(projectArray[index]);
+    renderTasks()
 }
+
+function findCurrentIndex () {
+    const projTitle = document.getElementById("projTitle").textContent
+    const activeIndex = projectArray.findIndex((element) => element.title === projTitle)
+    return activeIndex;
+}
+
+//FIX
+function renderTasks() {
+    let index = 0;
+    const projContainer = document.querySelector(".project-container")
+    //Need this check so doesn't duplicate multiple tasks
+    if(document.getElementById("task-container")){
+        projContainer.removeChild(document.getElementById("task-container"))
+    }
+    const container = document.createElement("div")
+    container.id = "task-container" 
+    
+    projectArray[findCurrentIndex()].project.forEach(element => {
+        const taskList = document.createElement("div");
+        taskList.setAttribute("data-index",index);
+        taskList.textContent = element.title;
+        taskList.classList.add("task-div")
+        //FIX Description Rendering
+        taskList.addEventListener("click", () => {
+           const cardDisplay = document.createElement("div")
+        })
+        container.appendChild(taskList);
+        index++;
+    })
+    
+    projContainer.appendChild(container);
+}
+
+
 
