@@ -1,5 +1,7 @@
-import { createProject, projectArray, deleteProject,createTodo,deleteTodo, editTodo } from "./todo";
+import { createProject,deleteProject,createTodo,deleteTodo, editTodo } from "./todo";
 import trashImage from "../images/trash-can.svg"
+import { storeProject } from "./localstorage";
+import { projectArray } from "./index";
 
 export function renderProjectHeader(project) {
     const projectContainer = document.querySelector(".project-container");
@@ -50,6 +52,7 @@ export function renderProjectTitles (projectArray) {
         const projItem = document.createElement('li');
         projItem.setAttribute("data-index",index)
         projItem.textContent = element.title;
+        storeProject(index,projectArray[index])
         insertTrashImg(projItem);
         projectListener(projItem);
         projList.appendChild(projItem);
@@ -101,10 +104,12 @@ export function handleAddProject (projectArray) {
 };
 
 function handleDeleteProject (projectIndex) {
+    
     const index = projectIndex;
     //Don't let last project get deleted
     if (projectArray.length > 1) {
         deleteProject(projectArray[index]);
+        localStorage.clear() 
         renderProjectTitles(projectArray);
     }
 }
@@ -130,8 +135,9 @@ function findCurrentIndex () {
 }
 
 
-function renderTasks() {
+export function renderTasks() {
     let index = 0;
+    const activeIndex = findCurrentIndex();
     const projContainer = document.querySelector(".project-container")
     //Need this check so doesn't duplicate multiple tasks
     if(document.getElementById("task-container")){
@@ -146,6 +152,7 @@ function renderTasks() {
         taskList.textContent = element.title;
         taskList.classList.add("task-div")
         insertTrashImg(taskList)
+        storeProject(activeIndex,projectArray[activeIndex])
         taskList.addEventListener("click", (event) => {
             //Stop img propagating the event upwards and rendering the task details
             if(event.target.tagName !== "IMG"){
@@ -161,9 +168,15 @@ function renderTasks() {
 }
 
 function handleDeleteTask(index) {
+    // localStorage.clear();
     const activeProject = projectArray[findCurrentIndex()];
+    const currentIndex = findCurrentIndex();
     const activeTodo = activeProject.project[index];
     deleteTodo(activeProject,activeTodo);
+    //Trigger another store on deleting last task in project
+    if (index == 0 ) {
+        storeProject(currentIndex,activeProject)
+    }
     renderTasks();  
 }
 

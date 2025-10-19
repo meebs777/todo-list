@@ -1,18 +1,20 @@
 import "./styles.css";
-import { createProject, createTodo, projectArray, projectIndex,deleteProject,deleteTodo,editTodo } from "./todo.js"
-import { renderProject, renderProjectHeader, renderProjectTitles, handleAddProject, handleAddTask } from "./dom.js";
+import { createProject,projectArray } from "./todo.js"
+import { renderProjectHeader, renderProjectTitles, handleAddProject, handleAddTask, renderTasks } from "./dom.js";
+import { retrieveProject } from "./localstorage.js";
+export { projectArray }
 
 
-const project = createProject("A");
-const project1 = createProject("B");
-const todo = createTodo("Title","Description","DueDate","Priority",project);
-const todo1 = createTodo("Title-1","Description","DueDate","Priority",project);
-const todo2 = createTodo("Title-1","Description","DueDate","Priority",project);
-renderProjectHeader(project);
-renderProjectHeader(project1)
-renderProjectTitles(projectArray)
-const project2 = createProject("C");
+
+retrieveProject();
+localStorage.clear();
+if(projectArray.length === 0) {
+    createProject("Task A")
+}
+renderProjectHeader(projectArray[0]);
 renderProjectTitles(projectArray)
 handleAddProject(projectArray);
-handleAddTask()
+handleAddTask();
+renderProjectTitles(projectArray)
+renderTasks()
 
