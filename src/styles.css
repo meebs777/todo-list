@@ -189,8 +189,44 @@
     height: 3rem;
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
+
   .task-div:hover {
     background-color: #c4b5fd;;
     cursor: pointer;
+  }
+
+  .task-div > img {
+    width: 35px;
+    height: 35px;
+    padding-right: 10px;
+  }
+
+  .task-div > img:hover {
+    cursor: pointer;
+    transform: scale(1.4);
+  }
+
+  #task-card {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    margin: 0 0 0 -150px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    height: 175px;
+    width: 300px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 20px;
+  }
+
+  #task-btn-container {
+    display: flex;
+    margin-top: 20px;
+    gap: 5px;
+    justify-content: flex-end;
   }

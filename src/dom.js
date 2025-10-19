@@ -1,4 +1,4 @@
-import { createProject, projectArray, deleteProject,createTodo } from "./todo";
+import { createProject, projectArray, deleteProject,createTodo,deleteTodo, editTodo } from "./todo";
 import trashImage from "../images/trash-can.svg"
 
 export function renderProjectHeader(project) {
@@ -31,6 +31,8 @@ export function handleAddTask() {
         const dueDate = document.getElementById("date").value
         const newTodo = createTodo(taskTitle,titleDescription,dueDate,"",projectArray[activeIndex]);
         renderTasks();
+        //FIXXXX
+        console.log("Hi Mibo. This is why it's twice")
         dialog.close();
     })
     cancelButton.addEventListener("click", () => {
@@ -63,9 +65,17 @@ export function renderProjectTitles (projectArray) {
 function insertTrashImg(parent) {
     const trshImg = document.createElement("img");
     trshImg.src = trashImage;
-    const dataIndex = parent.dataset.index
-    //Enable deleting of a project 
-    trshImg.addEventListener("click", () => handleDeleteProject(dataIndex));
+    ///Check if this is project or task
+    if(parent.dataset.index){
+        const dataIndex = parent.dataset.index
+        //Enable deleting of a project 
+        trshImg.addEventListener("click", () => handleDeleteProject(dataIndex));
+    } else if(parent.dataset.indexTask) {
+        const dataIndex = parent.dataset.indexTask
+        trshImg.addEventListener("click", () => handleDeleteTask(dataIndex));
+        // event.stopPropagation(); 
+
+    }
     parent.appendChild(trshImg)
 }
 
@@ -108,7 +118,7 @@ function projectListener(projItem) {
 
 }
 function switchActiveProject(index) {
-    //
+
     if (index > projectArray.length-1) {
         index--;
     }
@@ -122,7 +132,7 @@ function findCurrentIndex () {
     return activeIndex;
 }
 
-//FIX
+
 function renderTasks() {
     let index = 0;
     const projContainer = document.querySelector(".project-container")
@@ -135,12 +145,16 @@ function renderTasks() {
     
     projectArray[findCurrentIndex()].project.forEach(element => {
         const taskList = document.createElement("div");
-        taskList.setAttribute("data-index",index);
+        taskList.setAttribute("data-index-task",index);
         taskList.textContent = element.title;
         taskList.classList.add("task-div")
-        //FIX Description Rendering
-        taskList.addEventListener("click", () => {
-           const cardDisplay = document.createElement("div")
+        insertTrashImg(taskList)
+        taskList.addEventListener("click", (event) => {
+            //Stop img propagating the event upwards and rendering the task details
+            if(event.target.tagName !== "IMG"){
+                renderTaskDetails(element,taskList);
+            }
+            
         })
         container.appendChild(taskList);
         index++;
@@ -149,5 +163,70 @@ function renderTasks() {
     projContainer.appendChild(container);
 }
 
+function handleDeleteTask(index) {
+    const activeProject = projectArray[findCurrentIndex()];
+    const activeTodo = activeProject.project[index];
+    deleteTodo(activeProject,activeTodo);
+    renderTasks();  
+}
+
+//FIXXXX
+export function handleEditTask(task) {
+    const addTaskBtn = document.querySelector(".task-button")
+    const dialog = document.getElementById("taskModal");
+    const submitButton = document.querySelector("#submit-task");
+    const cancelButton = document.getElementById("cancel-task");
+    const taskIndex = task.dataset.indexTask
+    const todo = projectArray[findCurrentIndex()].project[taskIndex];
+
+    dialog.showModal();
+    
+    submitButton.addEventListener("click", () => {
+        //Match project title with current array index to make sure tasks are added to correct project
+        const activeIndex = findCurrentIndex();
+        const taskTitle = document.getElementById("task-title").value;
+        const titleDescription = document.getElementById("description").value
+        const dueDate = document.getElementById("date").value
+        editTodo(todo,"title",taskTitle);
+        editTodo(todo,"description",titleDescription);
+        editTodo(todo,"dueDate",dueDate);
+        renderTasks();
+        console.log(projectArray[findCurrentIndex()])
+        dialog.close();
+    })
+    cancelButton.addEventListener("click", () => {
+        dialog.close();
+    })
+    console.log(task)
+};
+
+function renderTaskDetails(task,taskEdit) {
+    const card = document.createElement("div");
+    const body = document.querySelector("body");
+    card.id = "task-card"
+    card.style.display = "block"
+    for (const property in task) {
+        const objProperty = document.createElement("p");
+        objProperty.textContent = `${property.charAt(0).toUpperCase() + property.slice(1)}: ${task[property]}`;
+        card.appendChild(objProperty);
+    }
+    const taskBtnContainer = document.createElement("div");
+    taskBtnContainer.id = "task-btn-container";
+    const closeBtn = document.createElement("button");
+    closeBtn.textContent = "Close"
+    closeBtn.addEventListener("click", () => {
+        body.removeChild(card);
+    })
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit"
+    editBtn.addEventListener("click", () => {
+        body.removeChild(card);
+        handleEditTask(taskEdit)
+    })
+    taskBtnContainer.appendChild(editBtn)
+    taskBtnContainer.appendChild(closeBtn)
+    card.appendChild(taskBtnContainer);
+    body.appendChild(card);
+}
 
 
